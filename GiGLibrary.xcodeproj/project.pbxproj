@@ -26,6 +26,7 @@
 		61F2ACEC1E9B9780003E20C4 /* InfiniteCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F2ACEB1E9B9780003E20C4 /* InfiniteCollectionView.swift */; };
 		61F2ACEE1E9B9D53003E20C4 /* InfiniteCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F2ACED1E9B9D53003E20C4 /* InfiniteCollectionVC.swift */; };
 		61F2ACF11E9BA297003E20C4 /* InfiniteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F2ACF01E9BA297003E20C4 /* InfiniteCollectionViewCell.swift */; };
+		6483B0872112FEEF00C6D366 /* Bundle+Current.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6483B0862112FEEF00C6D366 /* Bundle+Current.swift */; };
 		7B6B84951BC2962600517C2F /* GIGParseClass.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B6B84931BC2962600517C2F /* GIGParseClass.h */; };
 		7B6B84961BC2962600517C2F /* GIGParseClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B6B84941BC2962600517C2F /* GIGParseClass.m */; };
 		7BA7BBA51D7D724500644B6C /* GIGParseJsonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA7BBA41D7D724500644B6C /* GIGParseJsonTests.swift */; };
@@ -377,6 +378,7 @@
 		61F2ACEB1E9B9780003E20C4 /* InfiniteCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteCollectionView.swift; sourceTree = "<group>"; };
 		61F2ACED1E9B9D53003E20C4 /* InfiniteCollectionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InfiniteCollectionVC.swift; path = App/InfiniteCollection/InfiniteCollectionVC.swift; sourceTree = SOURCE_ROOT; };
 		61F2ACF01E9BA297003E20C4 /* InfiniteCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteCollectionViewCell.swift; sourceTree = "<group>"; };
+		6483B0862112FEEF00C6D366 /* Bundle+Current.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Current.swift"; sourceTree = "<group>"; };
 		7B6B84931BC2962600517C2F /* GIGParseClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GIGParseClass.h; path = Class/GIGParseClass.h; sourceTree = "<group>"; };
 		7B6B84941BC2962600517C2F /* GIGParseClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GIGParseClass.m; path = Class/GIGParseClass.m; sourceTree = "<group>"; };
 		7BA7BBA41D7D724500644B6C /* GIGParseJsonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIGParseJsonTests.swift; sourceTree = "<group>"; };
@@ -460,7 +462,7 @@
 		D99AD18E1B1DA3A3005BB4E5 /* GIGURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GIGURLResponse.m; sourceTree = "<group>"; };
 		D99AD1941B1DA3A3005BB4E5 /* NSArray+GIGExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+GIGExtension.h"; sourceTree = "<group>"; };
 		D99AD1951B1DA3A3005BB4E5 /* NSArray+GIGExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+GIGExtension.m"; sourceTree = "<group>"; };
-		D99AD1971B1DA3A3005BB4E5 /* NSBundle+GIGExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBundle+GIGExtension.h"; path = "Bundle/NSBundle+GIGExtension.h"; sourceTree = "<group>"; };
+		D99AD1971B1DA3A3005BB4E5 /* NSBundle+GIGExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+GIGExtension.h"; sourceTree = "<group>"; };
 		D99AD1981B1DA3A3005BB4E5 /* NSBundle+GIGExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBundle+GIGExtension.m"; path = "Bundle/NSBundle+GIGExtension.m"; sourceTree = "<group>"; };
 		D99AD19A1B1DA3A3005BB4E5 /* UIColor+GIGExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+GIGExtension.h"; sourceTree = "<group>"; };
 		D99AD19B1B1DA3A3005BB4E5 /* UIColor+GIGExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GIGExtension.m"; sourceTree = "<group>"; };
@@ -1090,6 +1092,8 @@
 		D99AD1961B1DA3A3005BB4E5 /* Bundle */ = {
 			isa = PBXGroup;
 			children = (
+				D99AD1971B1DA3A3005BB4E5 /* NSBundle+GIGExtension.h */,
+				6483B0862112FEEF00C6D366 /* Bundle+Current.swift */,
 			);
 			path = Bundle;
 			sourceTree = "<group>";
@@ -1650,7 +1654,6 @@
 				4AACDF961C60D98A00F4E8AE /* ActionSheetController */,
 				D99AD1931B1DA3A3005BB4E5 /* Array */,
 				D99AD1961B1DA3A3005BB4E5 /* Bundle */,
-				D99AD1971B1DA3A3005BB4E5 /* NSBundle+GIGExtension.h */,
 				7B6B84921BC2959500517C2F /* Class */,
 				D99AD1991B1DA3A3005BB4E5 /* Color */,
 				D99AD19C1B1DA3A3005BB4E5 /* CoreData */,
@@ -2300,6 +2303,7 @@
 				02F2F7FC1E82D71E0098E4AF /* ProgressVC.swift in Sources */,
 				FA0C22351D3E397E00433AFD /* Result.swift in Sources */,
 				D99AD2B51B1DA3A3005BB4E5 /* NSDictionary+GIGJSON.m in Sources */,
+				6483B0872112FEEF00C6D366 /* Bundle+Current.swift in Sources */,
 				D99AD2711B1DA3A3005BB4E5 /* NSBundle+GIGExtension.m in Sources */,
 				FA86D0EA1C870582003C5623 /* Json.swift in Sources */,
 				D99AD2891B1DA3A3005BB4E5 /* GIGDigest.m in Sources */,

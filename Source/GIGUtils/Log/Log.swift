@@ -37,20 +37,46 @@ public func >=(levelA: LogLevel, levelB: LogLevel) -> Bool {
     return levelA.rawValue >= levelB.rawValue
 }
 
+public var logManagers = Set<LogManager>()
+
+extension LogManager: Hashable {
+    public var hashValue: Int {
+        return bundle.hash
+    }
+    
+    public static func == (lhs: LogManager, rhs: LogManager) -> Bool {
+        return lhs.bundle == rhs.bundle
+    }
+}
 
 open class LogManager {
     
     open static let shared = LogManager()
+    // Por defecto el bundle es el main
+    public var bundle = Bundle.main
+    
+    // Si se crea una instancia se asocia el bundle actual
+    public init() {
+        self.bundle = Bundle.current
+        logManagers.insert(self)
+    }
     
     open var appName: String?
     open var logLevel: LogLevel = .none
     open var logStyle: LogStyle = .none
+    
+    // Si no existe un LogManager para el bundle devolvemos el compartido
+    static func managerFor(bundle: Bundle) -> LogManager {
+        let logManager = logManagers.first(where: {$0.bundle == bundle})
+        return logManager ?? LogManager.shared
+    }
 }
 
-
 public func Log(_ log: String, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
-    guard LogManager.shared.logLevel != .none else { return }
-    let appName = LogManager.shared.appName ?? "Gigigo Log Manager"
+    let manager = LogManager.managerFor(bundle: Bundle.current)
+    
+    guard manager.logLevel != .none else { return }
+    let appName = manager.appName ?? "Gigigo Log Manager"
     
     print("\(appName)::" + log)
 }

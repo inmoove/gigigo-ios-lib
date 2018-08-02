@@ -18,7 +18,13 @@ class SwiftRequestVC: UIViewController {
 		super.viewDidLoad()
 		
         self.reachability.delegate = self
-		LogManager.shared.logLevel = .debug
+
+        //        LogManager.shared.logLevel = .debug
+        // prueba de uso
+        let logManager = LogManager()
+        logManager.logLevel = .debug
+        Log("SwiftRequestVC Log")
+        
 	}
 	
 	@IBAction func onButtonSwiftRequestTap(_ sender: UIButton) {

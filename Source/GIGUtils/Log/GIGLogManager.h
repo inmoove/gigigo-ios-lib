@@ -37,5 +37,6 @@
 + (void)error:(NSString *)format, ...;
 + (void)logError:(NSError *)error;
 + (void)logException:(NSException *)exception;
++ (NSBundle *)bundleCaller;
 
 @end

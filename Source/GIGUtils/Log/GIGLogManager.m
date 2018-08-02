@@ -142,6 +142,19 @@
 	}
 }
 
+// No va bien al llamar desde Swift, la estructura del caller no permite parsearlo bien
++ (NSBundle *)bundleCaller
+{
+    NSString *caller = [self caller];
+    
+    NSString *newStr = [caller substringFromIndex:1];
+    NSString *firstWord = [[newStr componentsSeparatedByString:@" "] objectAtIndex:0];
+    
+    NSBundle *myBundle = [NSBundle bundleForClass:NSClassFromString(firstWord)];
+    
+    return myBundle;
+}
+
 #pragma mark - Private
 
 + (NSString *)caller
