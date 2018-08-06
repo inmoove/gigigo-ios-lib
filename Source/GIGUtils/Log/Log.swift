@@ -71,12 +71,12 @@ open class LogManager {
         return logManager ?? LogManager.shared
     }
     
-    public func setLogLevel(logLevel: LogLevel) {
+    public func setLogLevel(_ logLevel: LogLevel) {
         let logManager = logManagers.first(where: {$0.bundle == bundle})
         logManager?.logLevel = logLevel
     }
     
-    public func setLogStyle(logStyle: LogStyle) {
+    public func setLogStyle(_ logStyle: LogStyle) {
         let logManager = logManagers.first(where: {$0.bundle == bundle})
         logManager?.logStyle = logStyle
     }
@@ -93,35 +93,45 @@ public func Log(_ log: String, filename: NSString = #file, line: Int = #line, fu
 
 public func LogInfo(_ log: String, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
     let className = filename.lastPathComponent.components(separatedBy: ".").first!
-    let emoji = (LogManager.shared.logStyle == .funny) ? " ⓘ" : ""
+    
+    let manager = LogManager.managerFor(bundle: Bundle.current)
+    
+    let emoji = (manager.logStyle == .funny) ? " ⓘ" : ""
     let caller = " [Info\(emoji)] \(className)(\(line)) - \(funcname): "
-    guard LogManager.shared.logLevel >= .info else { return }
+    guard manager.logLevel >= .info else { return }
     Log(caller + log)
 }
 
 public func LogDebug(_ log: String, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
     let className = filename.lastPathComponent.components(separatedBy: ".").first!
-    let emoji = (LogManager.shared.logStyle == .funny) ? " 🐛" : ""
+    
+    let manager = LogManager.managerFor(bundle: Bundle.current)
+    
+    let emoji = (manager.logStyle == .funny) ? " 🐛" : ""
     let caller = " [Debug\(emoji)] \(className)(\(line)) - \(funcname): "
-    guard LogManager.shared.logLevel >= .debug else { return }
+    guard manager.logLevel >= .debug else { return }
     Log(caller + log)
 }
 
 public func LogWarn(_ message: String, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
-    guard LogManager.shared.logLevel >= .error else { return }
+    let manager = LogManager.managerFor(bundle: Bundle.current)
+    
+    guard manager.logLevel >= .error else { return }
     let className = filename.lastPathComponent.components(separatedBy: ".").first!
-    let emoji = (LogManager.shared.logStyle == .funny) ? " 🔥" : ""
+    let emoji = (manager.logStyle == .funny) ? " 🔥" : ""
     let caller = " [Error\(emoji)] \(className)(\(line)) - \(funcname): "
     Log(caller + message)
 }
 
 public func LogError(_ error: NSError?, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
+    let manager = LogManager.managerFor(bundle: Bundle.current)
+    
     guard
-        LogManager.shared.logLevel >= .error,
+        manager.logLevel >= .error,
         let err = error
         else { return }
     let className = filename.lastPathComponent.components(separatedBy: ".").first!
-    let emoji = (LogManager.shared.logStyle == .funny) ? " 🔥" : ""
+    let emoji = (manager.logStyle == .funny) ? " 🔥" : ""
     let caller = " [Error\(emoji)] \(className)(\(line)) - \(funcname): \(err.localizedDescription)"
     Log(caller)
 }
