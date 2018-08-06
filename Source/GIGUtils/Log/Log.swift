@@ -52,12 +52,15 @@ extension LogManager: Hashable {
 open class LogManager {
     
     open static let shared = LogManager()
-    // Por defecto el bundle es el main
     public var bundle = Bundle.main
     
-    // Si se crea una instancia se asocia el bundle actual
     public init() {
         self.bundle = Bundle.current
+        logManagers.insert(self)
+    }
+    
+    public init(bundle: Bundle) {
+        self.bundle = bundle
         logManagers.insert(self)
     }
     
@@ -65,7 +68,6 @@ open class LogManager {
     open var logLevel: LogLevel = .none
     open var logStyle: LogStyle = .none
     
-    // Si no existe un LogManager para el bundle devolvemos el compartido
     static func managerFor(bundle: Bundle) -> LogManager {
         let logManager = logManagers.first(where: {$0.bundle == bundle})
         return logManager ?? LogManager.shared
