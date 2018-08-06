@@ -70,6 +70,16 @@ open class LogManager {
         let logManager = logManagers.first(where: {$0.bundle == bundle})
         return logManager ?? LogManager.shared
     }
+    
+    public func setLogLevel(logLevel: LogLevel) {
+        let logManager = logManagers.first(where: {$0.bundle == bundle})
+        logManager?.logLevel = logLevel
+    }
+    
+    public func setLogStyle(logStyle: LogStyle) {
+        let logManager = logManagers.first(where: {$0.bundle == bundle})
+        logManager?.logStyle = logStyle
+    }
 }
 
 public func Log(_ log: String, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
