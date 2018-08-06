@@ -37,7 +37,8 @@ public func >=(levelA: LogLevel, levelB: LogLevel) -> Bool {
     return levelA.rawValue >= levelB.rawValue
 }
 
-public var logManagers = Set<LogManager>()
+public var logManagers = [LogManager]()
+public var idLog = [String]()
 
 extension LogManager: Hashable {
     public var hashValue: Int {
@@ -56,12 +57,14 @@ open class LogManager {
     
     public init() {
         self.bundle = Bundle.current
-        logManagers.insert(self)
+        logManagers.append(self)
     }
     
-    public init(bundle: Bundle) {
+    public init(bundle: Bundle, filename: NSString = #file) {
         self.bundle = bundle
-        logManagers.insert(self)
+        let className = filename.lastPathComponent.components(separatedBy: ".").first!
+        logManagers.append(self)
+        idLog.append(className)
     }
     
     open var appName: String?
@@ -71,6 +74,15 @@ open class LogManager {
     static func managerFor(bundle: Bundle) -> LogManager {
         let logManager = logManagers.first(where: {$0.bundle == bundle})
         return logManager ?? LogManager.shared
+    }
+    
+    static func managerFor(className: String) -> LogManager {
+        guard let idFound = idLog.index(of: className) else {
+            return LogManager.shared
+        }
+        
+        let logManager = logManagers[idFound]
+        return logManager 
     }
     
     public func setLogLevel(_ logLevel: LogLevel) {
@@ -85,7 +97,8 @@ open class LogManager {
 }
 
 public func Log(_ log: String, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
-    let manager = LogManager.managerFor(bundle: Bundle.current)
+    let className = filename.lastPathComponent.components(separatedBy: ".").first!
+    let manager = LogManager.managerFor(className: className)
     
     guard manager.logLevel != .none else { return }
     let appName = manager.appName ?? "Gigigo Log Manager"
