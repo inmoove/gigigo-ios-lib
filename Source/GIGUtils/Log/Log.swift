@@ -37,8 +37,7 @@ public func >=(levelA: LogLevel, levelB: LogLevel) -> Bool {
     return levelA.rawValue >= levelB.rawValue
 }
 
-public var logManagers = [LogManager]()
-public var idLog = [String]()
+public var logManagers = [String: LogManager]()
 
 extension LogManager: Hashable {
     public var hashValue: Int {
@@ -57,47 +56,40 @@ open class LogManager {
     
     public init() {
         self.bundle = Bundle.current
-        logManagers.append(self)
+        let filename: NSString = #file
+        guard let className = filename.lastPathComponent.components(separatedBy: ".").first else { return }
+        logManagers[className] = self
     }
     
     public init(bundle: Bundle, filename: NSString = #file) {
+        guard let className = filename.lastPathComponent.components(separatedBy: ".").first else { return }
         self.bundle = bundle
-        let className = filename.lastPathComponent.components(separatedBy: ".").first!
-        logManagers.append(self)
-        idLog.append(className)
+        logManagers[className] = self
     }
     
     open var appName: String?
     open var logLevel: LogLevel = .none
     open var logStyle: LogStyle = .none
     
-    static func managerFor(bundle: Bundle) -> LogManager {
-        let logManager = logManagers.first(where: {$0.bundle == bundle})
-        return logManager ?? LogManager.shared
-    }
-    
     static func managerFor(className: String) -> LogManager {
-        guard let idFound = idLog.index(of: className) else {
-            return LogManager.shared
-        }
-        
-        let logManager = logManagers[idFound]
-        return logManager 
+        return logManagers[className] ?? LogManager.shared
     }
     
-    public func setLogLevel(_ logLevel: LogLevel) {
-        let logManager = logManagers.first(where: {$0.bundle == bundle})
-        logManager?.logLevel = logLevel
+    public func setLogLevel(_ logLevel: LogLevel, filename: NSString = #file) {
+        guard let className = filename.lastPathComponent.components(separatedBy: ".").first else { return }
+        let logManager = logManagers[className] ?? LogManager.shared
+        logManager.logLevel = logLevel
     }
     
-    public func setLogStyle(_ logStyle: LogStyle) {
-        let logManager = logManagers.first(where: {$0.bundle == bundle})
-        logManager?.logStyle = logStyle
+    public func setLogStyle(_ logStyle: LogStyle, filename: NSString = #file) {
+        guard let className = filename.lastPathComponent.components(separatedBy: ".").first else { return }
+        let logManager = logManagers[className] ?? LogManager.shared
+        logManager.logStyle = logStyle
     }
 }
 
 public func Log(_ log: String, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
-    let className = filename.lastPathComponent.components(separatedBy: ".").first!
+    guard let className = filename.lastPathComponent.components(separatedBy: ".").first else { return }
     let manager = LogManager.managerFor(className: className)
     
     guard manager.logLevel != .none else { return }
@@ -107,9 +99,9 @@ public func Log(_ log: String, filename: NSString = #file, line: Int = #line, fu
 }
 
 public func LogInfo(_ log: String, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
-    let className = filename.lastPathComponent.components(separatedBy: ".").first!
+    guard let className = filename.lastPathComponent.components(separatedBy: ".").first else { return }
     
-    let manager = LogManager.managerFor(bundle: Bundle.current)
+    let manager = LogManager.managerFor(className: className)
     
     let emoji = (manager.logStyle == .funny) ? " ⓘ" : ""
     let caller = " [Info\(emoji)] \(className)(\(line)) - \(funcname): "
@@ -118,9 +110,9 @@ public func LogInfo(_ log: String, filename: NSString = #file, line: Int = #line
 }
 
 public func LogDebug(_ log: String, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
-    let className = filename.lastPathComponent.components(separatedBy: ".").first!
+    guard let className = filename.lastPathComponent.components(separatedBy: ".").first else { return }
     
-    let manager = LogManager.managerFor(bundle: Bundle.current)
+    let manager = LogManager.managerFor(className: className)
     
     let emoji = (manager.logStyle == .funny) ? " 🐛" : ""
     let caller = " [Debug\(emoji)] \(className)(\(line)) - \(funcname): "
@@ -129,23 +121,23 @@ public func LogDebug(_ log: String, filename: NSString = #file, line: Int = #lin
 }
 
 public func LogWarn(_ message: String, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
-    let manager = LogManager.managerFor(bundle: Bundle.current)
+    guard let className = filename.lastPathComponent.components(separatedBy: ".").first else { return }
+    let manager = LogManager.managerFor(className: className)
     
     guard manager.logLevel >= .error else { return }
-    let className = filename.lastPathComponent.components(separatedBy: ".").first!
     let emoji = (manager.logStyle == .funny) ? " 🔥" : ""
     let caller = " [Error\(emoji)] \(className)(\(line)) - \(funcname): "
     Log(caller + message)
 }
 
 public func LogError(_ error: NSError?, filename: NSString = #file, line: Int = #line, funcname: String = #function) {
-    let manager = LogManager.managerFor(bundle: Bundle.current)
+    guard let className = filename.lastPathComponent.components(separatedBy: ".").first else { return }
+    let manager = LogManager.managerFor(className: className)
     
     guard
         manager.logLevel >= .error,
         let err = error
         else { return }
-    let className = filename.lastPathComponent.components(separatedBy: ".").first!
     let emoji = (manager.logStyle == .funny) ? " 🔥" : ""
     let caller = " [Error\(emoji)] \(className)(\(line)) - \(funcname): \(err.localizedDescription)"
     Log(caller)
